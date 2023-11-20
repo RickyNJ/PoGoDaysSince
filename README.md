@@ -1,4 +1,4 @@
-"# PoGO Days Since" 
+# PoGO Days Since
 
 An overview of all past raid bosses and the amount of time it's been since they've last appeared.
 
