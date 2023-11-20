@@ -1,7 +1,7 @@
 from selenium import webdriver
 from bs4 import BeautifulSoup
-
 import json
+import re
 
 cService = webdriver.ChromeService(executable_path='D:/Selenium/chromedriver.exe')
 driver = webdriver.Chrome(service=cService)
@@ -21,22 +21,25 @@ for li in li_elements:
     title = li.get("title")
     tables = li.find_all('tr')
 
-    # print(tables[2].get_text(strip=True))
-
     listIndex = 0
-    sub_dict = {}
+    raids = []
 
     for table in tables: 
         content = table.get_text(strip=True)
 
         if content != "" and content[0] == "#":
-            sub_dict[listIndex] = [content]
+            pokemonId = content[:5]
+
+            cleaned_string = re.sub(r'[^a-zA-Z\s]', '', content)
+            pokemonName = cleaned_string[:-13]
+
+            raids.append([[pokemonId],[pokemonName]])
             listIndex+=1
 
-    data_dict[title] = sub_dict
+    data_dict[title] = raids
 
 
-with open("data.json", 'w') as json_file:
+with open("D:/Code/PoGoDaysSince/data/raidData.json", 'w') as json_file:
     json.dump(data_dict, json_file, indent=4)
 
 driver.quit()
